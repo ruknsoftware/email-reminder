@@ -1,6 +1,6 @@
 $(document).on('app_ready', function() {
 	frappe.call({
-		method: "email_reminder.utils.reminder.get_doctypes",
+		method: "email_reminder.utils.reminder.fetch_reminder_doctypes",
 		async: false,
 		callback: function (r) {
 			$.each(r.message, function(i, doctype) {
