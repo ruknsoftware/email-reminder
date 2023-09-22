@@ -10,14 +10,29 @@ def fetch_reminder_doctypes():
 
 @frappe.whitelist()
 def send_email(message, recipients, reminder_schedule_date, doctype, docname, site):
-    if not( message and recipients and reminder_schedule_date):
-        frappe.throw(_("Please Check if All Feilds in Messaging is Full !!"))
+    
+    error_message = []
+    hasError = False
+    if not message:
+        error_message.append(f'<li>{_("Message")}</li>')
+        hasError = True
 
+    if not reminder_schedule_date:
+        error_message.append(f'<li>{_("Reminder Date and Time")}</li>')
+        hasError = True
     try:
-        data = json.loads(recipients)
-        emails = [email["email"] for email in data if email]
+        if isinstance(recipients, str):
+            emails = json.loads(recipients)
+        elif isinstance(recipients, list):
+            emails = recipients
+        
         if not emails:
-            frappe.throw(_("Please add at least one email"))
+            error_message.append(f'<li>{_("Recipients Email")}</li>')
+            hasError = True
+
+        if hasError:
+            frappe.msgprint(f'{_("Mandatory fields required for Email Reminder")}<ul>{"".join(error_message)}</ul>')
+            return "Error No Log"
         
         doctype_fr = doctype.lower().replace(' ', '-')
         document_link = f"<a href='{site}/app/{doctype_fr}/{docname}'>Open Document</a>"
