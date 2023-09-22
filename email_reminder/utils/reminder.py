@@ -25,6 +25,8 @@ def send_email(message, recipients, reminder_schedule_date, doctype, docname, si
             emails = json.loads(recipients)
         elif isinstance(recipients, list):
             emails = recipients
+        else:
+            json.loads(recipients)
         
         if not emails:
             error_message.append(f'<li>{_("Recipients Email")}</li>')
