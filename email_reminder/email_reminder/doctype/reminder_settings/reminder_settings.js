@@ -3,11 +3,11 @@
 
 frappe.ui.form.on('Reminder Settings', {
     refresh:function(frm){
-        cur_frm.disable_save() 
+        frm.disable_save()
     },
 	generate_fields: function(frm) {
-        cur_frm.call({
-            doc: cur_frm.doc,
+        frm.call({
+            doc: frm.doc,
             method: "generate_fields",
             async: false,
             args: {
