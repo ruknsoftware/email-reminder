@@ -4,11 +4,6 @@ from frappe import _
 import re
 
 @frappe.whitelist()
-def fetch_reminder_doctypes():
-    reminder_doctypes = frappe.db.sql("""SELECT * FROM `tabReminder Doctypes`""", as_dict=1)
-    return [doc.document_type for doc in reminder_doctypes]
-
-@frappe.whitelist()
 def send_email(message, recipients, reminder_schedule_date, doctype, docname, site):
     
     error_message = []
